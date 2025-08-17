@@ -27,6 +27,8 @@
 - [Usage](#usage)
   - [Available Tools](#available-tools)
   - [Client Integration](#client-integration)
+  - [Docker Usage](#docker-usage)
+  - [MCP Client Configuration](#mcp-client-configuration)
   - [Management API](#management-api)
 - [Performance & Reliability](#performance--reliability)
 - [Security](#security)
@@ -324,6 +326,48 @@ The server provides several administrative endpoints for monitoring and control.
 | `GET`  | `/mcp/oauth-scopes`      | Get documentation for all OAuth scopes. | Public                       |
 | `GET`  | `/mcp/oauth-config`      | View the server's OAuth configuration.  | `mcp:admin:config:read`      |
 | `GET`  | `/mcp/oauth-token-info`  | View details of the provided token.     | Requires authentication      |
+
+### Docker Usage
+
+To build and run the server as a Docker container, use the following commands from the project root:
+
+1.  **Build the Docker Image**:
+    ```bash
+    docker build -t google-research-mcp .
+    ```
+
+2.  **Run the Docker Container**:
+    Ensure your `.env` file is configured with the necessary API keys.
+    ```bash
+    docker run -d --name google-research-mcp --restart=unless-stopped -p 3000:3000 --env-file .env google-research-mcp
+    ```
+    The server will be available at `http://localhost:3000`.
+
+    The `--restart=unless-stopped` flag ensures the container will restart automatically unless it is explicitly stopped. You can change this behavior with other restart policies:
+    - `no`: Do not automatically restart the container. (Default)
+    - `on-failure`: Restart the container only if it exits with a non-zero exit code.
+    - `unless-stopped`: Restart the container unless it is explicitly stopped or Docker is restarted.
+
+#### MCP Client Configuration
+
+This is an example MCP client configuration for RooCode. This example automatically allows all tools without requiring explicit user approval for each use. This simple examples does not use OAuth for a local docker server.
+
+```json
+{
+  "mcpServers": {
+    "GoogleResearcher": {
+      "type": "streamable-http",
+      "url": "http://localhost:3000/mcp",
+      "alwaysAllow": [
+        "google_search",
+        "scrape_page",
+        "analyze_with_gemini",
+        "research_topic"
+      ]
+    }
+  }
+}
+```
 
 ## Performance & Reliability
 

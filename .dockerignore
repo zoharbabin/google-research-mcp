@@ -1,0 +1,37 @@
+# Node modules
+node_modules
+npm-debug.log*
+
+# Git
+.git
+.gitignore
+
+# Environment files
+.env*
+
+# IDE
+.vscode
+.idea
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Build artifacts - keeping dist since we're pre-building locally
+# dist
+
+# Test files
+tests
+coverage
+*.log
+
+# Documentation
+README.md
+docs
+
+# CI/CD
+.github
+
+# Cache directories
+.npm
+.eslintcache
