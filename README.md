@@ -16,28 +16,41 @@
 
 ## Table of Contents
 
-- [Why Use This Server?](#why-use-this-server)
-- [Features](#features)
-- [System Architecture](#system-architecture)
-- [YouTube Transcript Extraction](#youtube-transcript-extraction)
-- [Getting Started](#getting-started)
-  - [Prerequisites](#prerequisites)
-  - [Installation & Setup](#installation--setup)
-  - [Running the Server](#running-the-server)
-- [Usage](#usage)
-  - [Available Tools](#available-tools)
-  - [Client Integration](#client-integration)
-  - [Docker Usage](#docker-usage)
-  - [MCP Client Configuration](#mcp-client-configuration)
-  - [Management API](#management-api)
-- [Performance & Reliability](#performance--reliability)
-- [Security](#security)
-  - [OAuth 2.1 Authorization](#oauth-21-authorization)
-  - [Available Scopes](#available-scopes)
-- [Testing](#testing)
-- [Troubleshooting](#troubleshooting)
-- [Contributing](#contributing)
-- [License](#license)
+- [Google Researcher MCP Server](#google-researcher-mcp-server)
+  - [Table of Contents](#table-of-contents)
+  - [Why Use This Server?](#why-use-this-server)
+  - [Features](#features)
+  - [System Architecture](#system-architecture)
+  - [YouTube Transcript Extraction](#youtube-transcript-extraction)
+    - [Key Features](#key-features)
+    - [Supported Error Types](#supported-error-types)
+    - [Retry Behavior](#retry-behavior)
+    - [Example Error Messages](#example-error-messages)
+  - [Getting Started](#getting-started)
+    - [Prerequisites](#prerequisites)
+    - [Installation \& Setup](#installation--setup)
+    - [Running the Server](#running-the-server)
+  - [Usage](#usage)
+    - [Available Tools](#available-tools)
+    - [Client Integration](#client-integration)
+      - [STDIO Client (Local Process)](#stdio-client-local-process)
+      - [HTTP+SSE Client (Web Application)](#httpsse-client-web-application)
+    - [Management API](#management-api)
+    - [Docker Usage](#docker-usage)
+      - [MCP Client Configuration](#mcp-client-configuration)
+  - [Performance \& Reliability](#performance--reliability)
+    - [YouTube Transcript Extraction Performance](#youtube-transcript-extraction-performance)
+    - [System Reliability](#system-reliability)
+    - [Monitoring \& Diagnostics](#monitoring--diagnostics)
+  - [Security](#security)
+    - [OAuth 2.1 Authorization](#oauth-21-authorization)
+    - [Available Scopes](#available-scopes)
+      - [Tool Execution Scopes](#tool-execution-scopes)
+      - [Administrative Scopes](#administrative-scopes)
+  - [Testing](#testing)
+  - [Troubleshooting](#troubleshooting)
+  - [Contributing](#contributing)
+  - [License](#license)
 
 ## Why Use This Server?
 
@@ -329,35 +342,34 @@ The server provides several administrative endpoints for monitoring and control.
 
 ### Docker Usage
 
-To build and run the server as a Docker container, use the following commands from the project root:
+The server can be run as a Docker container in STDIO mode for on-demand execution:
 
 1.  **Build the Docker Image**:
+    Ensure your `.env` file is configured with the necessary API keys, then build:
     ```bash
     docker build -t google-research-mcp .
     ```
+    The build process embeds your `.env` file into the container for security and simplicity.
 
-2.  **Run the Docker Container**:
-    Ensure your `.env` file is configured with the necessary API keys.
+2.  **Test the Container**:
     ```bash
-    docker run -d --name google-research-mcp --restart=unless-stopped -p 3000:3000 --env-file .env google-research-mcp
+    docker run -i --rm google-research-mcp
     ```
-    The server will be available at `http://localhost:3000`.
-
-    The `--restart=unless-stopped` flag ensures the container will restart automatically unless it is explicitly stopped. You can change this behavior with other restart policies:
-    - `no`: Do not automatically restart the container. (Default)
-    - `on-failure`: Restart the container only if it exits with a non-zero exit code.
-    - `unless-stopped`: Restart the container unless it is explicitly stopped or Docker is restarted.
+    You should see "STDIO transport is active. Waiting for input..." confirming STDIO mode works.
 
 #### MCP Client Configuration
 
-This is an example MCP client configuration for RooCode. This example automatically allows all tools without requiring explicit user approval for each use. This simple examples does not use OAuth for a local docker server.
+This is an example MCP client configuration using STDIO mode with on-demand Docker containers. This configuration automatically allows all tools without requiring explicit user approval for each use.
 
 ```json
 {
   "mcpServers": {
     "GoogleResearcher": {
-      "type": "streamable-http",
-      "url": "http://localhost:3000/mcp",
+      "type": "stdio",
+      "command": "docker",
+      "args": [
+        "container", "run", "-i", "--rm", "google-research-mcp"
+      ],
       "alwaysAllow": [
         "google_search",
         "scrape_page",
@@ -368,6 +380,12 @@ This is an example MCP client configuration for RooCode. This example automatica
   }
 }
 ```
+
+**Benefits of STDIO Mode:**
+- Fresh process for each request (no session conflicts)
+- No persistent network listeners or security concerns
+- Efficient resource usage (containers only run when needed)
+- Embedded API keys (no environment variable complexity)
 
 ## Performance & Reliability
 

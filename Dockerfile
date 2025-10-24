@@ -13,6 +13,16 @@ RUN npm ci --only=production
 # Copy the rest of the application code including pre-built dist
 COPY . .
 
+# Copy .env file and startup script
+COPY .env /app/.env
+COPY start.sh /app/start.sh
+
+# Make startup script executable
+RUN chmod +x /app/start.sh
+
+# Set environment variable to force STDIO mode (no HTTP server)
+ENV MCP_TEST_MODE=stdio
+
 # Create a non-root user for security
 RUN addgroup -g 1001 -S nodejs
 RUN adduser -S nodejs -u 1001
@@ -24,5 +34,5 @@ USER nodejs
 # Expose the port the app runs on
 EXPOSE 3000
 
-# Define the command to run the application
-CMD ["npm", "start"]
+# Define the command to run the application with environment loading
+CMD ["./start.sh"]

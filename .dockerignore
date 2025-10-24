@@ -6,8 +6,8 @@ npm-debug.log*
 .git
 .gitignore
 
-# Environment files
-.env*
+# Environment files - allow .env for embedding in container
+.env.example
 
 # IDE
 .vscode

@@ -29,6 +29,9 @@
   "type": "module",
   "main": "dist/server.js",
   "types": "dist/server.d.ts",
+  "bin": {
+    "google-researcher-mcp": "dist/server.js"
+  },
   "files": [
     "dist/**/*",
     "README.md",
