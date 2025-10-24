@@ -47,6 +47,7 @@
     "node": ">=18.0.0"
   },
   "scripts": {
+    "postinstall": "npm run build",
     "prepublishOnly": "npm run build && npm test",
     "prepack": "npm run build",
     "test:e2e": "npm run build && npm run test:e2e:stdio && npm run test:e2e:sse && npm run test:e2e:youtube",
