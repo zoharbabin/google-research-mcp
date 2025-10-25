@@ -19,6 +19,7 @@
 
 import express from "express";
 import cors from "cors";
+import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from 'node:url'; // Import fileURLToPath
 import { randomUUID } from "node:crypto";
@@ -48,32 +49,19 @@ type NextFunction = express.NextFunction;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// --- Dynamic Project Root Detection ---
-// Find project root by looking for package.json, regardless of execution location
-function findProjectRoot(startDir: string): string {
-  let currentDir = startDir;
-  while (currentDir !== path.dirname(currentDir)) { // Stop at filesystem root
-    try {
-      // Check if package.json exists in current directory
-      const packageJsonPath = path.join(currentDir, 'package.json');
-      if (require('fs').existsSync(packageJsonPath)) {
-        return currentDir;
-      }
-    } catch {
-      // Continue searching if file check fails
-    }
-    currentDir = path.dirname(currentDir);
-  }
-  // Fallback: assume we're in project root or one level down
-  return __dirname.includes('/dist') ? path.dirname(__dirname) : __dirname;
-}
+// --- Temporary Storage Configuration ---
+// Use OS temporary directory to avoid polluting user's project directories
+// This ensures clean npx execution without leaving storage folders behind
+const TEMP_STORAGE_BASE = path.join(os.tmpdir(), 'google-research-mcp');
 
-const PROJECT_ROOT = findProjectRoot(__dirname);
+// Configure Crawlee to use the same temporary directory
+// This must be set before any Crawlee code is imported or executed
+process.env.CRAWLEE_STORAGE_DIR = TEMP_STORAGE_BASE;
 
 // --- Default Paths ---
-const DEFAULT_CACHE_PATH = path.resolve(PROJECT_ROOT, 'storage', 'persistent_cache');
-const DEFAULT_EVENT_PATH = path.resolve(PROJECT_ROOT, 'storage', 'event_store');
-const DEFAULT_REQUEST_QUEUES_PATH = path.resolve(PROJECT_ROOT, 'storage', 'request_queues', 'default');
+const DEFAULT_CACHE_PATH = path.join(TEMP_STORAGE_BASE, 'persistent_cache');
+const DEFAULT_EVENT_PATH = path.join(TEMP_STORAGE_BASE, 'event_store');
+const DEFAULT_REQUEST_QUEUES_PATH = path.join(TEMP_STORAGE_BASE, 'request_queues', 'default');
 
 // --- Global Instances ---
 // Initialize Cache and Event Store globally so they are available for both transports

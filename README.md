@@ -85,6 +85,9 @@
   - **Granular Scopes**: Provides fine-grained control over access to tools and administrative functions.
 - **Monitoring & Management**:
   - **Administrative API**: Exposes endpoints for monitoring cache statistics, managing the cache, and inspecting the event store.
+- **Clean npx Execution**:
+  - **Temporary Storage**: All cache and storage data is kept in the OS temporary directory to avoid polluting user project directories when running via npx.
+  - **No Directory Pollution**: Running `npx github:user/repo` will not create `./storage` folders in your projects.
 
 ## System Architecture
 
