@@ -38,6 +38,9 @@
     - [Management API](#management-api)
     - [Docker Usage](#docker-usage)
       - [MCP Client Configuration](#mcp-client-configuration)
+    - [NPX Configuration](#npx-configuration)
+      - [Claude Code Configuration](#claude-code-configuration)
+      - [Roo Code Configuration](#roo-code-configuration)
   - [Performance \& Reliability](#performance--reliability)
     - [YouTube Transcript Extraction Performance](#youtube-transcript-extraction-performance)
     - [System Reliability](#system-reliability)
@@ -389,6 +392,69 @@ This is an example MCP client configuration using STDIO mode with on-demand Dock
 - No persistent network listeners or security concerns
 - Efficient resource usage (containers only run when needed)
 - Embedded API keys (no environment variable complexity)
+
+### NPX Configuration
+
+The server can be run directly via `npx` without installation, making it ideal for quick setup and testing.
+
+#### Claude Code Configuration
+
+Configure Claude Code by adding this server to your MCP client configuration:
+
+```json
+{
+  "mcpServers": {
+    "googler": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "github:jimweller/google-research-mcp"
+      ],
+      "env": {
+        "GOOGLE_CUSTOM_SEARCH_API_KEY": "${GOOGLE_SEARCH_API_KEY}",
+        "GOOGLE_CUSTOM_SEARCH_ID": "${GOOGLE_SEARCH_ID}",
+        "GOOGLE_GEMINI_API_KEY": "${GOOGLE_GEMINI_API_KEY}"
+      }
+    }
+  }
+}
+```
+
+#### Roo Code Configuration
+
+Configure Roo Code by adding this server to your MCP servers configuration:
+
+```json
+{
+  "mcpServers": {
+    "googler": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "github:jimweller/google-research-mcp"
+      ],
+      "env": {
+        "GOOGLE_CUSTOM_SEARCH_API_KEY": "${env:GOOGLE_SEARCH_API_KEY}",
+        "GOOGLE_CUSTOM_SEARCH_ID": "${env:GOOGLE_SEARCH_ID}",
+        "GOOGLE_GEMINI_API_KEY": "${env:GOOGLE_GEMINI_API_KEY}"
+      },
+      "alwaysAllow": [
+        "research_topic",
+        "google_search",
+        "scrape_page",
+        "analyze_with_gemini"
+      ]
+    }
+  }
+}
+```
+
+**Key Differences:**
+- Roo Code uses `${env:VARIABLE_NAME}` syntax for environment variables
+- Claude Code uses `${VARIABLE_NAME}` syntax
+- Roo Code supports `alwaysAllow` to pre-approve tools
 
 ## Performance & Reliability
 
