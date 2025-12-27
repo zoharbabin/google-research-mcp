@@ -296,6 +296,9 @@ function configureToolsAndResources(
                         // Add timeout configuration to crawler
                         requestHandlerTimeoutSecs: 15, // 15 second timeout
                         maxRequestsPerCrawl: 1, // Only process the single URL
+                        // Use in-memory request queue to avoid file system lock issues
+                        useSessionPool: false,
+                        persistCookiesPerSession: false,
                     });
                     
                     // Add timeout protection for web scraping
