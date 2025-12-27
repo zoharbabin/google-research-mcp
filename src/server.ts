@@ -89,6 +89,13 @@ async function initializeGlobalInstances(
     await fs.mkdir(path.dirname(cachePath), { recursive: true });
     await fs.mkdir(path.dirname(eventPath), { recursive: true });
     await fs.mkdir(requestQueuesPath, { recursive: true });
+    
+    // Crawlee needs these subdirectories for its internal operations
+    // Create the complete storage structure that Crawlee expects
+    await fs.mkdir(path.join(TEMP_STORAGE_BASE, 'datasets'), { recursive: true });
+    await fs.mkdir(path.join(TEMP_STORAGE_BASE, 'key_value_stores'), { recursive: true });
+    await fs.mkdir(path.join(TEMP_STORAGE_BASE, 'request_queues'), { recursive: true });
+    
     if (process.env.NODE_ENV !== 'test') {
       console.log(`✅ Ensured storage directories exist.`);
     }
