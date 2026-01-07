@@ -30,7 +30,7 @@ import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/
 import { PersistentEventStore } from "./shared/persistentEventStore.js";
 import { z } from "zod";  // Schema validation library
 import { GoogleGenAI } from "@google/genai";
-import { CheerioCrawler } from "crawlee";  // Web scraping library
+import { CheerioCrawler, Configuration } from "crawlee";  // Web scraping library
 import { YoutubeTranscript } from "@danielxceron/youtube-transcript";
 // Import cache modules using index file with .js extension
 import { PersistentCache, HybridPersistenceStrategy } from "./cache/index.js";
@@ -57,6 +57,10 @@ const TEMP_STORAGE_BASE = path.join(os.tmpdir(), 'google-research-mcp');
 // Configure Crawlee to use the same temporary directory
 // This must be set before any Crawlee code is imported or executed
 process.env.CRAWLEE_STORAGE_DIR = TEMP_STORAGE_BASE;
+
+// Disable Crawlee's persistent storage to avoid file lock issues
+// Single-URL scrapes don't need request queue persistence
+Configuration.getGlobalConfig().set('persistStorage', false);
 
 // --- Default Paths ---
 const DEFAULT_CACHE_PATH = path.join(TEMP_STORAGE_BASE, 'persistent_cache');
