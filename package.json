@@ -65,7 +65,9 @@
     "build": "tsc",
     "postbuild": "node -e \"const f='dist/server.js';const c=require('fs').readFileSync(f,'utf8');if(!c.startsWith('#!'))require('fs').writeFileSync(f,'#!/usr/bin/env node\\n'+c)\"",
     "start": "node dist/server.js",
-    "dev": "tsx watch src/server.ts"
+    "dev": "tsx watch src/server.ts",
+    "inspect": "npx @modelcontextprotocol/inspector node dist/server.js",
+    "test:e2e:inspector": "node tests/e2e/mcp-inspector-e2e.mjs"
   },
   "dependencies": {
     "@danielxceron/youtube-transcript": "^1.2.6",

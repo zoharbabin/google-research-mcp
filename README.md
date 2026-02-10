@@ -135,6 +135,8 @@ The assistant will use the `google_news_search` tool and return current articles
 - [MCP Resources](#mcp-resources)
 - [MCP Prompts](#mcp-prompts)
 - [Testing](#testing)
+- [Development Tools](#development-tools)
+  - [MCP Inspector](#mcp-inspector)
 - [Troubleshooting](#troubleshooting)
 - [Roadmap](#roadmap)
 - [Contributing](#contributing)
@@ -599,8 +601,37 @@ const comparison = await client.getPrompt({
 | `npm start` | Run the built server (production) |
 | `npm run dev` | Start with live-reload (development) |
 | `npm run build` | Compile TypeScript to `dist/` |
+| `npm run inspect` | Open MCP Inspector for interactive debugging |
 
 For testing philosophy and structure, see the [Testing Guide](./docs/testing-guide.md).
+
+## Development Tools
+
+### MCP Inspector
+
+The [MCP Inspector](https://github.com/modelcontextprotocol/inspector) is a visual debugging tool for MCP servers. Use it to interactively test tools, browse resources, and verify prompts.
+
+**Run the Inspector:**
+```bash
+npm run inspect
+```
+
+This opens a browser interface at `http://localhost:5173` connected to the server via STDIO.
+
+**What to Expect:**
+
+| Primitive | Count | Items |
+|-----------|-------|-------|
+| **Tools** | 8 | `google_search`, `google_image_search`, `google_news_search`, `scrape_page`, `search_and_scrape`, `sequential_search`, `academic_search`, `patent_search` |
+| **Resources** | 6 | `search://recent`, `config://server`, `stats://cache`, `stats://events`, `search://session/current`, `stats://resources` |
+| **Prompts** | 8 | `comprehensive-research`, `fact-check`, `summarize-url`, `news-briefing`, `patent-portfolio-analysis`, `competitive-analysis`, `literature-review`, `technical-deep-dive` |
+
+**Troubleshooting Inspector Issues:**
+
+- **"Cannot find module" error**: Run `npm run build` first — Inspector requires compiled JavaScript.
+- **Tool calls fail with API errors**: Ensure `GOOGLE_CUSTOM_SEARCH_API_KEY` and `GOOGLE_CUSTOM_SEARCH_ID` are set in your `.env` file.
+- **Port 5173 in use**: The Inspector UI runs on port 5173. Stop other services using that port or check if another Inspector instance is running.
+- **Server crashes on startup**: Check that all dependencies are installed (`npm install`) and Playwright is set up (`npx playwright install chromium`).
 
 ## Troubleshooting
 
