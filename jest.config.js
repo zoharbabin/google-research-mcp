@@ -36,7 +36,9 @@ export default {
   },
   testMatch: [
     '<rootDir>/src/**/*.spec.ts',
-    '<rootDir>/src/**/*.test.ts'
+    '<rootDir>/src/**/*.test.ts',
+    '<rootDir>/tests/**/*.spec.ts',
+    '<rootDir>/tests/**/*.test.ts'
   ],
   testPathIgnorePatterns: [
     '/node_modules/',

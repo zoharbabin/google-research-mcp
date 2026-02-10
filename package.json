@@ -62,6 +62,7 @@
     "test:verbose": "node --experimental-vm-modules --no-deprecation node_modules/jest/bin/jest.js --verbose",
     "test:fix": "node --experimental-vm-modules --no-deprecation node_modules/jest/bin/jest.js --no-cache",
     "test:warnings": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
+    "test:benchmark": "node --experimental-vm-modules --no-deprecation node_modules/jest/bin/jest.js --testPathPattern=benchmark --verbose",
     "build": "tsc",
     "postbuild": "node -e \"const f='dist/server.js';const c=require('fs').readFileSync(f,'utf8');if(!c.startsWith('#!'))require('fs').writeFileSync(f,'#!/usr/bin/env node\\n'+c)\"",
     "start": "node dist/server.js",
