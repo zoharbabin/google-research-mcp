@@ -17,6 +17,7 @@ import {
   DEFAULT_TIMEOUT,
 } from './types.js';
 import { logger } from '../shared/logger.js';
+import { validateUrlForSSRF, SSRFProtectionError } from '../shared/urlValidator.js';
 
 // ── Type Detection ─────────────────────────────────────────────────────────
 
@@ -83,6 +84,9 @@ async function fetchDocument(
 ): Promise<{ buffer: ArrayBuffer; contentType?: string }> {
   const maxFileSize = options.maxFileSize ?? DEFAULT_MAX_FILE_SIZE;
   const timeout = options.timeout ?? DEFAULT_TIMEOUT;
+
+  // SSRF protection: validate URL before fetching
+  await validateUrlForSSRF(url);
 
   const response = await fetch(url, {
     signal: AbortSignal.timeout(timeout),
@@ -328,6 +332,18 @@ export async function parseDocument(
     };
   } catch (fetchError) {
     const errorMessage = fetchError instanceof Error ? fetchError.message : String(fetchError);
+
+    // Check for SSRF protection error
+    if (fetchError instanceof SSRFProtectionError) {
+      return {
+        success: false,
+        documentType: DocumentType.UNKNOWN,
+        error: {
+          type: DocumentParseErrorType.NETWORK_ERROR,
+          message: `URL blocked by security policy: ${errorMessage}`,
+        },
+      };
+    }
 
     // Check for size limit error
     if (errorMessage.includes('too large')) {

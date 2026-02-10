@@ -80,7 +80,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Source Attribution**: `include_sources` parameter on `search_and_scrape` — appends numbered source URL list.
 - **Event Store Encryption**: Wired `EVENT_STORE_ENCRYPTION_KEY` env var to existing AES-256-GCM infrastructure.
 
-## [1.2.1] - 2025-07-15
+## [1.2.1] - 2024-07-15
 
 ### Fixed
 - **Critical Scraping Issue**: Resolved a critical bug where `scrape_page` and the composite research tool were returning placeholder test content instead of actual scraped web data.
@@ -114,7 +114,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Created detailed [Technical Documentation](youtube-transcript-extraction.md) for the new YouTube transcript extraction system.
 - Added a comprehensive [API Reference](api-scrape-page.md) for the `scrape_page` tool, including examples of error responses.
 
-## [1.1.0] - 2025-07-06
+## [1.1.0] - 2024-07-06
 
 ### Added
 - **Complete CI/CD Pipeline:** Implemented a comprehensive CI/CD pipeline using GitHub Actions for fully automated testing, building, and multi-environment publishing (development, pre-release, production) to the npm registry.

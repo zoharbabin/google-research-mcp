@@ -63,15 +63,9 @@ import rateLimit, { ipKeyGenerator } from "express-rate-limit";
 import { validateEnvironmentOrExit, getValidatedEnvValue } from "./shared/envValidator.js";
 import { scoreSource, scoreAndRankSources, type QualityScores } from "./shared/qualityScoring.js";
 import {
-  createAnnotatedContent,
-  annotateSearchResults,
-  annotateScrapedContent,
-  annotateResearchContent,
   annotateImageResults,
   annotateNewsResults,
   annotateError,
-  AnnotationPresets,
-  type AnnotatedTextContent,
 } from "./shared/contentAnnotations.js";
 import { registerResources, trackSearch, type RecentSearch } from "./resources/index.js";
 import { registerPrompts } from "./prompts/index.js";
@@ -2168,8 +2162,13 @@ export async function createAppAndHttpTransport(
   // ─── 0️⃣ ENVIRONMENT VALIDATION & CORS SETUP ─────────────────────────────────────
   // Validate all environment variables at startup with clear, actionable error messages
   validateEnvironmentOrExit();
-const ALLOWED_ORIGINS =
-process.env.ALLOWED_ORIGINS?.split(",").map((s) => s.trim()) || ["*"];
+const ALLOWED_ORIGINS = process.env.ALLOWED_ORIGINS
+  ? process.env.ALLOWED_ORIGINS.split(",").map((s) => s.trim()).filter(s => s.length > 0)
+  : [];
+
+if (ALLOWED_ORIGINS.length === 0) {
+  logger.warn('ALLOWED_ORIGINS not configured - CORS will reject cross-origin requests. Set ALLOWED_ORIGINS env var for production use.');
+}
 
   // Create the Express app instance here
   const app = express();

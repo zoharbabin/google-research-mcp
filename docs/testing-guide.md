@@ -84,7 +84,7 @@ All test commands are defined as scripts in `package.json`.
 | `npm test`            | Runs all component tests (`*.spec.ts`) using Jest.                       |
 | `npm run test:coverage` | Runs component tests and generates a detailed code coverage report.      |
 | `npm run test:verbose`| Runs component tests with verbose output, including `console.log`.       |
-| `npm run test:e2e`    | Executes the full E2E suite for both STDIO and SSE transports.           |
+| `npm run test:e2e`    | Executes the full E2E suite (STDIO, SSE, and YouTube transports).        |
 
 ### Running Specific Tests
 

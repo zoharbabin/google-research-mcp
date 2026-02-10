@@ -324,6 +324,10 @@ For security configuration details, see the OAuth 2.1 section in the [**README**
 ## Extensibility and Customization
 
 ### Adding a New Tool
+
+For a comprehensive step-by-step guide, see [**Adding New Tools Guide**](../ADDING_NEW_TOOLS.md).
+
+Quick overview:
 1.  **Implement the Logic**: Write a function that performs the desired action.
 2.  **Integrate Caching**: Wrap the core logic with `globalCache.getOrCompute()` to ensure it's performant.
 3.  **Register the Tool**: In `configureToolsAndResources`, call `server.tool()` with the tool's name, its Zod schema for input validation, and the handler function.

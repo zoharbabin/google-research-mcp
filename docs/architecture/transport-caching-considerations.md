@@ -4,7 +4,7 @@ This document explains how the Google Researcher MCP Server ensures consistent c
 
 ## The Challenge: Multiple Transports, One Cache
 
-The server supports two primary transport methods, as detailed in the [**Architecture Guide**](./architecture/architecture.md):
+The server supports two primary transport methods, as detailed in the [**Architecture Guide**](./architecture.md):
 
 1.  **STDIO Transport**: For local, process-based communication.
 2.  **HTTP+SSE Transport**: For remote, web-based communication.
