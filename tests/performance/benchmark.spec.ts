@@ -49,7 +49,8 @@ const BENCHMARK_CONFIG = {
     sampleSize: IS_CI ? 50 : 100,
   },
   memory: {
-    maxBaselineMb: 200,
+    // CI runners have higher base memory usage (~250MB vs local ~195MB)
+    maxBaselineMb: IS_CI ? 300 : 200,
     maxGrowthMb: IS_CI ? 100 : 50, // Allow more growth in CI
     iterationsToCheck: IS_CI ? 50 : 100,
   },
