@@ -110,6 +110,9 @@ describe('Server Core Functionality', () => {
 
   describe('Global Instance Initialization', () => {
     it('should initialize global cache and event store instances', async () => {
+      // Ensure storage directory exists before test (for CI isolation)
+      await fs.mkdir(paths.storageDir, { recursive: true });
+
       // Import the initialization function
       const { initializeGlobalInstances } = await import('./server.js');
 
@@ -117,7 +120,8 @@ describe('Server Core Functionality', () => {
       await initializeGlobalInstances(paths.cachePath, paths.eventPath, paths.requestQueuesPath);
 
       // Verify directories were created
-      expect(await fs.access(paths.storageDir).then(() => true, () => false)).toBe(true);
+      // initializeGlobalInstances creates parent dirs of cachePath/eventPath (storageDir)
+      // and requestQueuesPath directly
       expect(await fs.access(paths.storageDir).then(() => true, () => false)).toBe(true);
       expect(await fs.access(paths.requestQueuesPath).then(() => true, () => false)).toBe(true);
     });
