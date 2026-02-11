@@ -7,7 +7,8 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 
 # Install all dependencies (including devDependencies for build)
-RUN npm ci
+# Use --ignore-scripts to skip 'prepare' hook since we build explicitly below
+RUN npm ci --ignore-scripts
 
 # Copy source code and build configuration
 COPY tsconfig.json ./
@@ -49,8 +50,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 RUN groupadd -r mcp && useradd -r -g mcp mcp
 
 # Copy package files and install production-only dependencies
+# Use --ignore-scripts since we copy pre-built dist/ from builder stage
 COPY package.json package-lock.json ./
-RUN npm ci --omit=dev && npm cache clean --force
+RUN npm ci --omit=dev --ignore-scripts && npm cache clean --force
 
 # Install only Chromium browser for Playwright
 RUN npx playwright install chromium
