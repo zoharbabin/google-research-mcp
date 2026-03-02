@@ -22,7 +22,7 @@ This document provides a comprehensive overview of the Google Researcher MCP Ser
 
 ## High-Level Overview
 
-The Google Researcher MCP Server is a backend service that implements the [Model Context Protocol (MCP)](https://github.com/zoharbabin/google-research-mcp). Its primary purpose is to empower AI assistants and other clients with a powerful suite of research-oriented tools:
+The Google Researcher MCP Server is a backend service that implements the [Model Context Protocol (MCP)](https://github.com/zoharbabin/google-researcher-mcp). Its primary purpose is to empower AI assistants and other clients with a powerful suite of research-oriented tools:
 
 -   **`google_search`**: Executes queries against the Google Search API. Supports recency filtering via `time_range` and advanced filters.
 -   **`google_image_search`**: Searches Google Images with filtering by size, type, color, and file format.

@@ -11,6 +11,7 @@ describe('MCP Prompts', () => {
       expect(PROMPT_METADATA).toHaveProperty('fact-check');
       expect(PROMPT_METADATA).toHaveProperty('summarize-url');
       expect(PROMPT_METADATA).toHaveProperty('news-briefing');
+      expect(PROMPT_METADATA).toHaveProperty('due-diligence-background');
     });
 
     describe('comprehensive-research', () => {
@@ -81,11 +82,28 @@ describe('MCP Prompts', () => {
         expect(prompt.arguments).toContain('timeRange');
       });
     });
+
+    describe('due-diligence-background', () => {
+      const prompt = PROMPT_METADATA['due-diligence-background'];
+
+      it('has correct name', () => {
+        expect(prompt.name).toBe('due-diligence-background');
+      });
+
+      it('has description about due diligence', () => {
+        expect(prompt.description).toContain('due diligence');
+      });
+
+      it('has expected arguments', () => {
+        expect(prompt.arguments).toContain('companyName');
+        expect(prompt.arguments).toHaveLength(1);
+      });
+    });
   });
 
   describe('PROMPT_NAMES', () => {
     it('contains all prompt names', () => {
-      expect(PROMPT_NAMES).toHaveLength(8);
+      expect(PROMPT_NAMES).toHaveLength(9);
       // Basic prompts
       expect(PROMPT_NAMES).toContain('comprehensive-research');
       expect(PROMPT_NAMES).toContain('fact-check');
@@ -96,6 +114,8 @@ describe('MCP Prompts', () => {
       expect(PROMPT_NAMES).toContain('competitive-analysis');
       expect(PROMPT_NAMES).toContain('literature-review');
       expect(PROMPT_NAMES).toContain('technical-deep-dive');
+      // Due diligence prompt
+      expect(PROMPT_NAMES).toContain('due-diligence-background');
     });
 
     it('matches keys in PROMPT_METADATA', () => {

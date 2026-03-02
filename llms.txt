@@ -5,7 +5,7 @@
 ## Quick Reference
 
 - **Primary Tool**: `search_and_scrape` - Use for most research tasks
-- **Documentation**: https://github.com/zoharbabin/google-research-mcp
+- **Documentation**: https://github.com/zoharbabin/google-researcher-mcp
 - **Full Context**: See llms-full.txt for detailed tool specifications
 
 ## Tool Selection Guide

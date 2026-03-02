@@ -197,8 +197,8 @@ describe('MCP Protocol Compliance', () => {
   // ── Prompt Metadata Validation ─────────────────────────────────────────────
 
   describe('Prompt Metadata Compliance', () => {
-    it('should have all 8 registered prompts in metadata', () => {
-      expect(PROMPT_NAMES.length).toBe(8);
+    it('should have all 9 registered prompts in metadata', () => {
+      expect(PROMPT_NAMES.length).toBe(9);
     });
 
     it('should include comprehensive-research prompt', () => {

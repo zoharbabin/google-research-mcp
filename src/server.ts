@@ -13,7 +13,7 @@
  * All operations use a sophisticated caching system to improve performance and
  * reduce API calls to external services.
  *
- * @see https://github.com/zoharbabin/google-research-mcp for MCP documentation
+ * @see https://github.com/zoharbabin/google-researcher-mcp for MCP documentation
  */
 
 import express from "express";

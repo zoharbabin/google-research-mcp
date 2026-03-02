@@ -9,6 +9,7 @@
  * - fact-check: Verify a claim using authoritative sources
  * - summarize-url: Extract and summarize content from a URL
  * - news-briefing: Get a current news summary on a topic
+ * - due-diligence-background: Background & reputational DD research on a company
  */
 
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
@@ -47,6 +48,7 @@ export function registerPrompts(server: McpServer): void {
   registerCompetitiveAnalysis(server);
   registerLiteratureReview(server);
   registerTechnicalDeepDive(server);
+  registerDueDiligenceBackground(server);
 }
 
 // ── Individual Prompt Implementations ────────────────────────────────────────
@@ -726,6 +728,174 @@ Begin researching: ${technology}`,
   );
 }
 
+// ── Due Diligence Background Research ────────────────────────────────────────
+
+/**
+ * Registers the due-diligence-background prompt
+ */
+function registerDueDiligenceBackground(server: McpServer): void {
+  server.prompt(
+    'due-diligence-background',
+    {
+      companyName: z
+        .string()
+        .min(1)
+        .max(200)
+        .describe('The company name to research (e.g., "PathFactory")'),
+    },
+    async ({ companyName }) => {
+      return {
+        messages: [
+          {
+            role: 'user' as const,
+            content: {
+              type: 'text' as const,
+              text: `Conduct public-source background and reputational due diligence research on a company. Find any publicly disclosed security breaches, data leaks, compliance violations, regulatory enforcement actions, lawsuits, executive scandals, or other concerning issues. Also document positive security posture findings (certifications, trust pages).
+
+**Target Company:** ${companyName}
+
+---
+
+Execute the following phases in order. Use \`sequential_search\` to track progress across phases. Budget: ~20-25 queries maximum.
+
+## PHASE 0 - DISCOVERY (find everything about the company first)
+
+You must discover ALL of the following before proceeding to screening phases. Use \`search_and_scrape\` and \`google_search\` as needed.
+
+### 0.1 - Find the company website
+- \`google_search\`: "${companyName}" official website (num_results: 3)
+- Identify the primary company domain (e.g., companyname.com). Record as COMPANY_WEBSITE and COMPANY_DOMAIN.
+
+### 0.2 - Find all entity names (current name, prior names, subsidiaries, DBAs, acquired entities)
+- \`search_and_scrape\`: "${companyName}" formerly known as OR "previously named" OR rebrand OR renamed (num_results: 3)
+- \`search_and_scrape\`: "${companyName}" subsidiary OR subsidiaries OR "acquired" OR acquisition OR "parent company" (num_results: 3)
+- \`google_search\`: site:COMPANY_DOMAIN "formerly" OR "previously" OR "now known as" (num_results: 3)
+- Record ALL entity names found: the current company name, all prior/historical names, all subsidiaries, DBAs, and any companies they acquired. This is the ENTITY_LIST.
+
+### 0.3 - Find key executives and board members
+- \`search_and_scrape\`: "${companyName}" CEO OR founder OR "board of directors" OR executives OR leadership (num_results: 3)
+- \`google_search\`: site:COMPANY_DOMAIN about OR team OR leadership OR "board of directors" (num_results: 3)
+- Scrape the company's about/team/leadership page if found.
+- Record ALL current and former executives, founders, and board members. Include their titles. This is the EXECUTIVE_LIST.
+
+### 0.4 - Summarize discovery
+Before proceeding, print a summary:
+- **Company Website:** [URL]
+- **All Entity Names Found:** [list each with type: current name / prior name / subsidiary / acquired entity]
+- **All Executives Found:** [list each with title]
+
+---
+
+Now proceed with screening using the ENTITY_LIST and EXECUTIVE_LIST discovered above.
+
+## PHASE 1 - COMPANY'S OWN DISCLOSURES (highest signal, do first)
+- Use \`scrape_page\` on: COMPANY_WEBSITE/security (or /trust, /trust-center)
+- Use \`scrape_page\` on: COMPANY_WEBSITE/privacy (or /privacy-policy)
+- Use \`google_search\`: site:COMPANY_DOMAIN SOC2 OR ISO27001 OR "security certification" OR "penetration testing" (num_results: 5)
+Record: what certifications they claim, what security practices they describe, any self-disclosed incidents.
+
+## PHASE 2 - NEGATIVE SCREENING (exact-match quoted entity names)
+Combine entity names from ENTITY_LIST into OR-quoted batches of 3 to stay within search length limits. For each batch, run these queries via \`google_search\` (num_results: 10 each):
+
+Query A (Security): "Entity1" OR "Entity2" OR "Entity3" data breach OR security incident OR data leak OR hack
+Query B (Legal): "Entity1" OR "Entity2" OR "Entity3" lawsuit OR "regulatory action" OR fine OR penalty OR "class action"
+Query C (Compliance): "Entity1" OR "Entity2" OR "Entity3" GDPR OR CCPA OR PIPEDA violation OR complaint
+Query D (Reputational): "Entity1" OR "Entity2" OR "Entity3" scandal OR controversy OR layoffs OR fraud OR misconduct
+
+If you have more than 3 entity names, split into multiple batches. Prioritize the primary company name and any well-known subsidiaries in the first batch.
+
+## PHASE 3 - BREACH DATABASE CHECKS (one query each, skip if empty)
+- \`google_search\`: "PrimaryEntityName" OR "Entity2" site:haveibeenpwned.com (num_results: 3)
+- \`google_search\`: "PrimaryEntityName" OR "Entity2" site:oag.ca.gov/privacy/databreach (num_results: 3)
+- \`google_search\`: "PrimaryEntityName" OR "Entity2" CVE vulnerability advisory (num_results: 5)
+
+## PHASE 4 - EXECUTIVE SCREENING (batch names from EXECUTIVE_LIST)
+Combine executive names into OR-quoted batches of 3. For each batch:
+
+Query: "Exec1" OR "Exec2" OR "Exec3" lawsuit OR scandal OR fraud OR controversy OR "regulatory action" OR misconduct
+
+If any query returns a hit that APPEARS relevant (not a different person with the same name), run an individual follow-up \`search_and_scrape\` on that specific person to confirm. Disambiguate carefully by cross-referencing company names, locations, and titles.
+
+## PHASE 5 - CORPORATE HISTORY (use search_and_scrape for content)
+- \`search_and_scrape\`: "${companyName}" acquisition OR funding OR investment history (num_results: 3)
+- \`search_and_scrape\`: "${companyName}" CEO OR founder background career (num_results: 3)
+
+## PHASE 6 - NEWS CHECK
+- \`google_news_search\`: "${companyName}" (freshness: year, num_results: 5)
+- If any major subsidiaries were discovered, also search: "SubsidiaryName" (freshness: year, num_results: 3)
+
+---
+
+**STOP RULES (strictly follow):**
+1. If a query category returns ZERO relevant results after ONE well-formed query, log it as "no findings" and move on. Do NOT run 3-4 variations of the same empty search.
+2. Do NOT scrape LinkedIn, Crunchbase, ZoomInfo, or Glassdoor URLs - they will fail. Extract info from google_search snippet text instead.
+3. ALWAYS use exact-match quoted "entity name" in queries. Never run broad unquoted searches.
+4. If an entity has minimal public footprint, combine it into OR queries with larger entities. Do not give it dedicated queries.
+5. Maximum total queries across all phases: 25 (including discovery).
+
+---
+
+**OUTPUT FORMAT:**
+
+## 1. Executive Summary
+One paragraph: overall clean/concerning finding across all categories.
+
+## 2. Entities Researched
+Table: Entity Name | Type (current/prior/subsidiary/acquired) | Period | Status
+
+## 3. Corporate History Timeline
+Table: Date | Event | Source
+
+## 4. Security & Data Privacy Findings
+### 4.1 Data Breaches & Security Incidents
+[CLEAN or FINDINGS with details]
+### 4.2 CVEs & Vulnerability Disclosures
+[CLEAN or FINDINGS]
+### 4.3 Regulatory Enforcement Actions
+[CLEAN or FINDINGS]
+### 4.4 Security Certifications & Posture
+(positive findings from Phase 1)
+
+## 5. Litigation & Legal Proceedings
+[CLEAN or FINDINGS with details]
+
+## 6. Executive Background Research
+For each executive: Name | Role | Prior Roles | Negative Findings [NONE or details]
+
+## 7. Reputational & Media Analysis
+### 7.1 Industry Recognition (positive)
+### 7.2 Layoffs & Employee Sentiment
+### 7.3 Media Coverage of Key Events
+
+## 8. Search Methodology
+### 8.1 Entity Names Searched (full list)
+### 8.2 Executive Names Searched (full list)
+### 8.3 Queries Run (table: Category | Query | Results Found)
+### 8.4 Sources Consulted
+
+## 9. Limitations & Caveats
+- Absence of evidence vs. evidence of absence
+- Sources that were inaccessible (LinkedIn, etc.)
+- Entities with minimal public footprint
+- Certifications requiring currency verification
+- Recommendation for formal background check services (LexisNexis, D&B) to supplement
+
+## 10. References
+Numbered list with URLs for every source cited.
+
+For every finding (positive or negative), include the source URL. For every "CLEAN" verdict, list what was checked.
+
+---
+
+Begin with Phase 0: discover the company website, all entity names, and all executives.`,
+            },
+          },
+        ],
+      };
+    }
+  );
+}
+
 // ── Prompt Descriptions (for testing and documentation) ─────────────────────
 
 /**
@@ -771,6 +941,12 @@ export const PROMPT_METADATA = {
     name: 'technical-deep-dive',
     description: 'In-depth technical investigation of a technology or concept',
     arguments: ['technology', 'focusArea'],
+  },
+  'due-diligence-background': {
+    name: 'due-diligence-background',
+    description:
+      'Background & reputational due diligence research on a company: automatically discovers subsidiaries, prior names, executives, then screens for security breaches, compliance violations, lawsuits, executive scandals, and security posture',
+    arguments: ['companyName'],
   },
 } as const;
 

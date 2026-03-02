@@ -5,7 +5,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![MCP](https://img.shields.io/badge/MCP-Compatible-blue.svg)](https://modelcontextprotocol.io)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue.svg)](https://www.typescriptlang.org/)
-[![Tests](https://github.com/zoharbabin/google-research-mcp/actions/workflows/ci.yml/badge.svg)](https://github.com/zoharbabin/google-research-mcp/actions)
+[![Tests](https://github.com/zoharbabin/google-researcher-mcp/actions/workflows/ci.yml/badge.svg)](https://github.com/zoharbabin/google-researcher-mcp/actions)
 [![Node.js Version](https://img.shields.io/badge/node-%3E%3D20.0.0-brightgreen.svg)](https://nodejs.org/)
 
 > Professional research tools for AI assistants - Google Search, web scraping, academic papers, patents, and more
@@ -101,7 +101,7 @@ Add to `%APPDATA%\Claude\claude_desktop_config.json`:
 
 ### One-Click Install (MCPB)
 
-Download the latest `.mcpb` bundle from [GitHub Releases](https://github.com/zoharbabin/google-research-mcp/releases) and double-click to install in Claude Desktop. You'll be prompted to enter your Google API credentials.
+Download the latest `.mcpb` bundle from [GitHub Releases](https://github.com/zoharbabin/google-researcher-mcp/releases) and double-click to install in Claude Desktop. You'll be prompted to enter your Google API credentials.
 
 ### Claude Code
 
@@ -131,7 +131,7 @@ Use the same JSON configuration above in your MCP settings.
 ### Local Development
 
 ```bash
-git clone https://github.com/zoharbabin/google-research-mcp.git && cd google-researcher-mcp
+git clone https://github.com/zoharbabin/google-researcher-mcp.git && cd google-researcher-mcp
 npm install && npx playwright install chromium
 cp .env.example .env   # Then add your Google API keys to .env
 npm run dev            # Server is now running on STDIO transport
@@ -431,7 +431,7 @@ For a detailed explanation, see the [Architecture Guide](./docs/architecture/arc
 
 1.  **Clone the Repository**:
     ```bash
-    git clone https://github.com/zoharbabin/google-research-mcp.git
+    git clone https://github.com/zoharbabin/google-researcher-mcp.git
     cd google-researcher-mcp
     ```
 
@@ -734,7 +734,7 @@ This opens a browser interface at `http://localhost:5173` connected to the serve
 
 ## Roadmap
 
-Feature requests and improvements are tracked as [GitHub Issues](https://github.com/zoharbabin/google-research-mcp/issues). Contributions welcome.
+Feature requests and improvements are tracked as [GitHub Issues](https://github.com/zoharbabin/google-researcher-mcp/issues). Contributions welcome.
 
 ## Contributing
 

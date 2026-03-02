@@ -8,7 +8,7 @@ Complete guide to all distribution channels for Google Researcher MCP server, in
 |---------|------|--------|---------|------|
 | **npm** | Package Registry | ✅ Published | 6.0.0 | [npmjs.com](https://www.npmjs.com/package/google-researcher-mcp) |
 | **MCP Registry** | Official Anthropic | ✅ Published | 6.0.0 | Via `mcp-publisher` CLI |
-| **MCPB** | One-click Install | ✅ Automated | 6.0.0 | [GitHub Releases](https://github.com/zoharbabin/google-research-mcp/releases) |
+| **MCPB** | One-click Install | ✅ Automated | 6.0.0 | [GitHub Releases](https://github.com/zoharbabin/google-researcher-mcp/releases) |
 | **awesome-mcp-servers** | Curated List (80k⭐) | ⏳ PR Pending | - | [PR #1917](https://github.com/punkpeye/awesome-mcp-servers/pull/1917) |
 | **Glama.ai** | Directory (17k+) | 📋 Not Listed | - | [glama.ai/mcp/servers](https://glama.ai/mcp/servers) |
 | **MCP.so** | Marketplace (17k+) | 📋 Not Listed | - | [mcp.so](https://mcp.so) |
@@ -45,7 +45,7 @@ For users evaluating this MCP server:
 
 **Best for:** Non-technical users who want instant setup.
 
-1. Go to [GitHub Releases](https://github.com/zoharbabin/google-research-mcp/releases)
+1. Go to [GitHub Releases](https://github.com/zoharbabin/google-researcher-mcp/releases)
 2. Download `google-researcher-mcp.mcpb`
 3. Double-click to install in Claude Desktop
 4. Enter your [Google API credentials](./API_SETUP.md) when prompted
@@ -92,11 +92,11 @@ npm install google-researcher-mcp
 **Best for:** Containerized deployments and HTTP/SSE mode.
 
 ```bash
-docker pull ghcr.io/zoharbabin/google-research-mcp:latest
+docker pull ghcr.io/zoharbabin/google-researcher-mcp:latest
 docker run -p 3000:3000 \
   -e GOOGLE_CUSTOM_SEARCH_API_KEY=your-key \
   -e GOOGLE_CUSTOM_SEARCH_ID=your-id \
-  ghcr.io/zoharbabin/google-research-mcp:latest
+  ghcr.io/zoharbabin/google-researcher-mcp:latest
 ```
 
 ---
@@ -204,7 +204,7 @@ mcpb pack . google-researcher-mcp.mcpb
 
 **Our Entry (in PR):**
 ```markdown
-- [Google Researcher MCP](https://github.com/zoharbabin/google-research-mcp) - Comprehensive research tools including Google Search (web, news, images), web scraping, academic paper search, patent search, and YouTube transcript extraction. 🟢 ![TypeScript](https://img.shields.io/badge/-TypeScript-3178C6?logo=typescript&logoColor=white) ☁️ 🏠
+- [Google Researcher MCP](https://github.com/zoharbabin/google-researcher-mcp) - Comprehensive research tools including Google Search (web, news, images), web scraping, academic paper search, patent search, and YouTube transcript extraction. 🟢 ![TypeScript](https://img.shields.io/badge/-TypeScript-3178C6?logo=typescript&logoColor=white) ☁️ 🏠
 ```
 
 **Entry Format Explained:**
@@ -248,7 +248,7 @@ gh pr create
 **Submission Process:**
 1. Navigate to https://glama.ai/mcp/servers
 2. Click "Add Server" or "Submit"
-3. Enter GitHub repository URL: `https://github.com/zoharbabin/google-research-mcp`
+3. Enter GitHub repository URL: `https://github.com/zoharbabin/google-researcher-mcp`
 4. Server is automatically indexed and scored
 
 **Expected Listing:**
@@ -383,5 +383,5 @@ After each release, verify:
 | [CONTRIBUTING.md](./CONTRIBUTING.md) | Contribution guide |
 | [CHANGELOG.md](./CHANGELOG.md) | Version history |
 | [manifest.json](../manifest.json) | MCPB manifest |
-| [Issue #89](https://github.com/zoharbabin/google-research-mcp/issues/89) | Distribution tracking issue |
-| [Issue #85](https://github.com/zoharbabin/google-research-mcp/issues/85) | awesome-mcp-servers submission |
+| [Issue #89](https://github.com/zoharbabin/google-researcher-mcp/issues/89) | Distribution tracking issue |
+| [Issue #85](https://github.com/zoharbabin/google-researcher-mcp/issues/85) | awesome-mcp-servers submission |

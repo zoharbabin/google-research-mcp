@@ -8,13 +8,13 @@
     "url": "https://github.com/zoharbabin"
   },
   "license": "MIT",
-  "homepage": "https://github.com/zoharbabin/google-research-mcp#readme",
+  "homepage": "https://github.com/zoharbabin/google-researcher-mcp#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/zoharbabin/google-research-mcp.git"
+    "url": "git+https://github.com/zoharbabin/google-researcher-mcp.git"
   },
   "bugs": {
-    "url": "https://github.com/zoharbabin/google-research-mcp/issues"
+    "url": "https://github.com/zoharbabin/google-researcher-mcp/issues"
   },
   "keywords": [
     "mcp",

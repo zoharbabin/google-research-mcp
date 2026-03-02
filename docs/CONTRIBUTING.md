@@ -10,7 +10,7 @@ We are committed to fostering an open and welcoming environment. All contributor
 
 ## How Can I Contribute?
 
-- **Reporting Bugs**: If you find a bug, please create a detailed issue in our [GitHub Issues](https://github.com/zoharbabin/google-research-mcp/issues).
+- **Reporting Bugs**: If you find a bug, please create a detailed issue in our [GitHub Issues](https://github.com/zoharbabin/google-researcher-mcp/issues).
 - **Suggesting Enhancements**: Have an idea for a new feature or an improvement? Open an issue to discuss it.
 - **Writing Code**: Help fix bugs or implement new features.
 - **Improving Documentation**: Correct typos, clarify confusing sections, or add new examples.
@@ -21,7 +21,7 @@ We are committed to fostering an open and welcoming environment. All contributor
 ### Development Environment Setup
 
 1.  **Fork the Repository**:
-    Click the "Fork" button at the top right of the [project page](https://github.com/zoharbabin/google-research-mcp).
+    Click the "Fork" button at the top right of the [project page](https://github.com/zoharbabin/google-researcher-mcp).
 
 2.  **Clone Your Fork**:
     ```bash
@@ -125,7 +125,7 @@ We use [Semantic Versioning](https://semver.org/). All changes are recorded in t
 
 ## Reporting Security Vulnerabilities
 
-If you discover a security vulnerability, please do **not** open a public issue. Instead, use [GitHub's private vulnerability reporting](https://github.com/zoharbabin/google-research-mcp/security/advisories/new). We will address it as quickly as possible.
+If you discover a security vulnerability, please do **not** open a public issue. Instead, use [GitHub's private vulnerability reporting](https://github.com/zoharbabin/google-researcher-mcp/security/advisories/new). We will address it as quickly as possible.
 
 ## License
 
