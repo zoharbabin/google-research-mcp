@@ -99,7 +99,7 @@ export class MCPEndToEndTest {
         query: "JavaScript async await",
         num_results: 2
       }
-    });
+    }, undefined, { timeout: 120_000 });
     assert(combined.length > 0);
     console.log("✨ search_and_scrape OK");
     return combined;
